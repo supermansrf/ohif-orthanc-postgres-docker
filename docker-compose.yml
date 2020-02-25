@@ -17,7 +17,7 @@ services:
       - ${NGINX_DEFAULT_CONF:-./config/nginx.conf}:/etc/nginx/conf.d/default.conf:ro
 
   orthanc:
-    image: jodogne/orthanc-plugins:1.5.8
+    image: osimis/orthanc:20.2.0
     container_name: orthanc
     depends_on:
       - postgres
@@ -29,11 +29,8 @@ services:
       - ${ORTHANC_DB:-./orthanc_db}:/var/lib/orthanc/db
       - ${ORTHANC_CONFIG:-./config/orthanc.json}:/etc/orthanc/orthanc.json:ro
     environment:
-      - POSTGRES_PORT=${POSTGRES_PORT:-5432}
-      - POSTGRES_USER=${POSTGRES_USER:-postgres}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-pgpassword}
-      - PGDATA=${PGDATA:-/var/lib/postgresql/data}
-      - POSTGRES_DB=orthanc
+      - DW_ENABLED=true
+    command: /etc/orthanc/orthanc.json
 
   postgres:
     image: postgres:12.1
