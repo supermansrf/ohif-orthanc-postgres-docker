@@ -8,7 +8,7 @@ services:
       - orthanc
     restart: always
     ports:
-      - '80:80' # Web
+      - '80:80'
     networks:
       - frontend
       - backend
@@ -25,9 +25,6 @@ services:
     networks:
       - frontend
       - backend
-#    ports:
-#      - ${ORTHANC_DICOM_PORT:-4242}:4242
-#      - ${ORTHANC_HTTP_PORT:-8042}:8042
     volumes:
       - ${ORTHANC_DB:-./orthanc_db}:/var/lib/orthanc/db
       - ${ORTHANC_CONFIG:-./config/orthanc.json}:/etc/orthanc/orthanc.json:ro
@@ -43,8 +40,6 @@ services:
     container_name: postgres
     networks:
       - backend
-#    ports:
-#      - ${POSTGRES_PORT:-5432}:5432
     volumes:
       - ${POSTGRES_DATA_MNT:-/pg_data/data}:${PGDATA:-/var/lib/postgresql/data}
     environment:
