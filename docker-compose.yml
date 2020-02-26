@@ -13,8 +13,10 @@ services:
       - frontend
       - backend
     volumes:
-      - ${VIEWER_CONFIG}:/usr/share/nginx/html/app-config.js:ro
+      # Nginx as a reversed proxy for orthanc and the viewer
       - ${NGINX_DEFAULT_CONF}:/etc/nginx/conf.d/default.conf:ro
+      # OHIF Viewer configuration to reach DICOMWeb endpoints
+      - ${VIEWER_CONFIG}:/usr/share/nginx/html/app-config.js:ro
 
   orthanc:
     image: osimis/orthanc:20.2.0
@@ -26,10 +28,14 @@ services:
       - frontend
       - backend
     volumes:
-      - ${ORTHANC_DB_MNT}:/var/lib/orthanc/db
+      # configuration file
       - ${ORTHANC_CONFIG}:/etc/orthanc/orthanc.json:ro
+      # storage volume for raw dicoms
+      - ${ORTHANC_DB_MNT}:/var/lib/orthanc/db
     environment:
+      # DICOMWeb Plugin
       - DW_ENABLED=true
+      # Postgres Plugin
       - PG_ENABLED=true
     command: /etc/orthanc/orthanc.json
 
