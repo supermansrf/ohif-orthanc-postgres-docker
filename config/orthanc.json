@@ -7,25 +7,15 @@
     // displayed in Orthanc Explorer and at the URI "/system".
     "Name" : "MyOrthanc",
 
-    "PostgreSQL": {
-      "EnableIndex": true,
-      "EnableStorage": true, // DICOM files are stored in the Orthanc container in /var/lib/orthanc/db/
-      "Host": "postgres", // the name of the PostgreSQL container
-      "Port" : 5432,
-      "Database": "orthanc", // default database name in PostgreSQL container (no need to create it)
-      "Username": "postgres", // default user name in PostgreSQL container (no need to create it)
-      "Password" : "pgpassword"
-  },
-  
     // Path to the directory that holds the heavyweight files (i.e. the
     // raw DICOM instances). Backslashes must be either escaped by
     // doubling them, or replaced by forward slashes "/".
-    "StorageDirectory" : "OrthancStorage",
+    "StorageDirectory" : "/var/lib/orthanc/db",
   
     // Path to the directory that holds the SQLite index (if unset, the
     // value of StorageDirectory is used). This index could be stored on
     // a RAM-drive or a SSD device for performance reasons.
-    "IndexDirectory" : "OrthancStorage",
+    "IndexDirectory" : "/var/lib/orthanc/db",
   
     // Path to the directory where Orthanc stores its large temporary
     // files. The content of this folder can be safely deleted if
@@ -63,7 +53,7 @@
     // find shared libraries. Backslashes must be either escaped by
     // doubling them, or replaced by forward slashes "/".
     "Plugins" : [
-      "/usr/share/orthanc/plugins", "/usr/local/share/orthanc/plugins"
+      "/usr/share/orthanc/plugins"
     ],
   
     // Maximum number of processing jobs that are simultaneously running
@@ -188,7 +178,7 @@
        * command line "storescp 2000".
        **/
       // "sample" : [ "STORESCP", "127.0.0.1", 2000 ]
-      "ohif" : [ "OHIFDCM", "viewer", 3000 ]
+      // "ohif" : [ "OHIFDCM", "viewer", 3000 ]
   
       /**
        * A fourth parameter is available to enable patches for
@@ -539,6 +529,16 @@
       // "Host" : "localhost",       // Hard-codes the name of the host for subsequent WADO-RS requests (deprecated)
       "StudiesMetadata" : "Full", // How study-level metadata is retrieved (since release 1.1, cf. section below)
       "SeriesMetadata" : "Full"   // How series-level metadata is retrieved (since release 1.1, cf. section below)
+    },
+
+    "PostgreSQL": {
+      "EnableIndex": true,
+      "EnableStorage": false, // DICOM files are stored in the Orthanc container in /var/lib/orthanc/db/
+      "Host": "postgres", // the name of the PostgreSQL container
+      "Port" : 5432,
+      "Database": "orthanc", // default database name in PostgreSQL container (no need to create it)
+      "Username": "postgres", // default user name in PostgreSQL container (no need to create it)
+      "Password" : "pgpassword"
     }
   }
   

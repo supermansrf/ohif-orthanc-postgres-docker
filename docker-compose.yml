@@ -13,8 +13,8 @@ services:
       - frontend
       - backend
     volumes:
-      - ${VIEWER_CONFIG:-./config/viewer.js}:/usr/share/nginx/html/app-config.js:ro
-      - ${NGINX_DEFAULT_CONF:-./config/nginx.conf}:/etc/nginx/conf.d/default.conf:ro
+      - ${VIEWER_CONFIG}:/usr/share/nginx/html/app-config.js:ro
+      - ${NGINX_DEFAULT_CONF}:/etc/nginx/conf.d/default.conf:ro
 
   orthanc:
     image: osimis/orthanc:20.2.0
@@ -26,10 +26,11 @@ services:
       - frontend
       - backend
     volumes:
-      - ${ORTHANC_DB:-./orthanc_db}:/var/lib/orthanc/db
-      - ${ORTHANC_CONFIG:-./config/orthanc.json}:/etc/orthanc/orthanc.json:ro
+      - ${ORTHANC_DB_MNT}:/var/lib/orthanc/db
+      - ${ORTHANC_CONFIG}:/etc/orthanc/orthanc.json:ro
     environment:
       - DW_ENABLED=true
+      - PG_ENABLED=true
     command: /etc/orthanc/orthanc.json
 
   postgres:
@@ -38,11 +39,11 @@ services:
     networks:
       - backend
     volumes:
-      - ${POSTGRES_DATA_MNT:-/pg_data/data}:${PGDATA:-/var/lib/postgresql/data}
+      - ${POSTGRES_DATA_MNT}:${PGDATA}
     environment:
-      - POSTGRES_USER=${POSTGRES_USER:-postgres}
-      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-pgpassword}
-      - PGDATA=${PGDATA:-/var/lib/postgresql/data}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+      - PGDATA=${PGDATA}
       - POSTGRES_DB=orthanc
 
 networks:
